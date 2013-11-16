@@ -4,7 +4,7 @@ var CssSelector = function (options) {
 	var me = this;
 
 	// defaults
-	this.ignoredTags = ['tbody', 'font', 'b', 'i', 's'];
+	this.ignoredTags = ['font', 'b', 'i', 's'];
 	this.parent = document;
 	this.ignoredClassBase = false;
 	this.enableResultStripping = true;
@@ -312,15 +312,8 @@ CssSelector.prototype = {
 			}
 			if (this.isIgnoredTag(element.tagName)) {
 
-				// disables tbody ignorance in cases when it is definately 
-				// not generated. Auto generated tbodys first child will always 
-				// be tr
-				if (element.tagName !== 'TBODY'
-					|| element.firstChild.nodeName !== '#text') {
-
-					element = element.parentNode;
-					continue;
-				}
+				element = element.parentNode;
+				continue;
 			}
 			if (top > 0) {
 				top--;
