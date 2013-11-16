@@ -31,7 +31,7 @@ var CssSelector = function (options) {
 var ElementSelector = function (element, ignoredClasses) {
 
 	this.element = element;
-
+	this.isDirectChild = true;
 	this.tag = element.localName;
 
 	// nth-of-child(n+1)
@@ -82,7 +82,8 @@ ElementSelectorList.prototype.getCssSelector = function () {
 	for (var i = 0; i < this.length; i++) {
 		var selector = this[i];
 
-		var resultSelector = selector.getCssSelector();
+		var isFirstSelector = i === this.length-1;
+		var resultSelector = selector.getCssSelector(isFirstSelector);
 
 		if (this.CssSelector.enableSmartTableSelector) {
 			if (selector.tag === 'tr') {
@@ -114,7 +115,11 @@ ElementSelectorList.prototype.getCssSelector = function () {
 
 ElementSelector.prototype = {
 
-	getCssSelector: function () {
+	getCssSelector: function (isFirstSelector) {
+
+		if(isFirstSelector === undefined) {
+			isFirstSelector = false;
+		}
 
 		var selector = this.tag;
 		if (this.id !== null) {
@@ -130,6 +135,9 @@ ElementSelector.prototype = {
 		}
 		if (this.indexn !== null && this.indexn !== -1) {
 			selector += ':nth-of-type(n+' + this.indexn + ')';
+		}
+		if(this.isDirectChild && isFirstSelector === false) {
+			selector = "> "+selector;
 		}
 
 		return selector;
@@ -157,6 +165,10 @@ ElementSelector.prototype = {
 
 				this.index = null;
 			}
+		}
+
+		if(this.isDirectChild === true) {
+			this.isDirectChild = mergeSelector.isDirectChild;
 		}
 
 		if (this.id !== null) {
@@ -242,6 +254,20 @@ CssSelector.prototype = {
 			}
 		}
 
+		// strip isDirectChild
+		for (var i = 0; i < selectors.length; i++) {
+			var selector = selectors[i];
+			if (selector.isDirectChild === true) {
+				selector.isDirectChild = false;
+				var cssSeletor = selectors.getCssSelector();
+				var newSelectedElements = this.query(cssSeletor);
+				// if results doesn't match then undo changes
+				if (!compareElements(newSelectedElements)) {
+					selector.isDirectChild = true;
+				}
+			}
+		}
+
 		// strip ids
 		for (var i = 0; i < selectors.length; i++) {
 			var selector = selectors[i];
@@ -321,9 +347,12 @@ CssSelector.prototype = {
 				continue;
 			}
 
-			var Selector = new ElementSelector(element, this.ignoredClasses);
+			var selector = new ElementSelector(element, this.ignoredClasses);
+			if(this.isIgnoredTag(element.parentNode.tagName)) {
+				selector.isDirectChild = false;
+			}
 
-			elementSelectorList.push(Selector);
+			elementSelectorList.push(selector);
 			element = element.parentNode;
 		}
 

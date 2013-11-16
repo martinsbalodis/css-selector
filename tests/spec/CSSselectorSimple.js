@@ -18,7 +18,7 @@ describe("CSS Selector Simple", function () {
 		var element = document.getElementsByName('test-simple-element')[0];
 		var css_selector = selector.getCssSelector([element]);
 
-		expect(css_selector).toBe("div:nth-of-type(1) a:nth-of-type(1)");
+		expect(css_selector).toBe("div:nth-of-type(1) > a:nth-of-type(1)");
 	});
 
 	it("should be able to select multiple elements", function () {
@@ -26,7 +26,7 @@ describe("CSS Selector Simple", function () {
 		var elements = document.getElementsByName('test-milti-element');
 		var css_selector = selector.getCssSelector(elements);
 
-		expect(css_selector).toBe("div:nth-of-type(2) span a:nth-of-type(1)");
+		expect(css_selector).toBe("div:nth-of-type(2) > span > a:nth-of-type(1)");
 	});
 
 	it("should be able to select multiple elements n+", function () {
@@ -35,7 +35,7 @@ describe("CSS Selector Simple", function () {
 		var css_selector = selector.getCssSelector(elements);
 
 
-		expect(css_selector).toBe("div:nth-of-type(3) span:nth-of-type(n+2) a:nth-of-type(1)");
+		expect(css_selector).toBe("div:nth-of-type(3) > span:nth-of-type(n+2) > a:nth-of-type(1)");
 	});
 
 	it("should be able to ignore tags", function () {
@@ -43,7 +43,7 @@ describe("CSS Selector Simple", function () {
 		var elements = jQuery('.test-ignore-tags');
 		var css_selector = selector.getCssSelector(elements);
 
-		expect(css_selector).toBe("table:nth-of-type(1) tbody:nth-of-type(1) tr:nth-of-type(1) td:nth-of-type(1)");
+		expect(css_selector).toBe("table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(1)");
 	});
 
 	it("should be able to skip elements from top", function () {
@@ -51,7 +51,7 @@ describe("CSS Selector Simple", function () {
 		var elements = jQuery('.test-skip-top');
 		var css_selector = selector.getCssSelector(elements, 2);
 
-		expect(css_selector).toBe("table:nth-of-type(2) tbody:nth-of-type(1) tr:nth-of-type(1)");
+		expect(css_selector).toBe("table:nth-of-type(2) > tbody:nth-of-type(1) > tr:nth-of-type(1)");
 	});
 
 	it("should be able to skip elements from top and use n+1 selectors", function () {
@@ -59,7 +59,7 @@ describe("CSS Selector Simple", function () {
 		var elements = jQuery('.test-skip-top-n');
 		var css_selector = selector.getCssSelector(elements, 2);
 
-		expect(css_selector).toBe("table:nth-of-type(3) tbody:nth-of-type(1) tr:nth-of-type(n+2)");
+		expect(css_selector).toBe("table:nth-of-type(3) > tbody:nth-of-type(1) > tr:nth-of-type(n+2)");
 	});
 });
 
@@ -68,7 +68,8 @@ describe("CSS Selector Strip", function () {
 
 	beforeEach(function () {
 		selector = new CssSelector({
-			parent: jQuery('#strip-tests')[0]
+			parent: jQuery('#strip-tests')[0],
+			ignoredClasses:['do-not-strip-direct-child-test']
 		});
 	});
 
@@ -102,6 +103,14 @@ describe("CSS Selector Strip", function () {
 		var css_selector = selector.getCssSelector([element]);
 
 		expect(css_selector).toBe("span.needed a");
+	});
+
+	it("should not strip direct child when a subchild exists", function () {
+
+		var elements = $('.do-not-strip-direct-child-test');
+		var css_selector = selector.getCssSelector(elements);
+
+		expect(css_selector).toBe("span > div");
 	});
 
 });

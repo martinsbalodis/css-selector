@@ -21,10 +21,11 @@ var result_selector = selector.getCssSelector();
 
 ## Features
 
- - Select by tag name
- - Select by id
- - Select by class name
- - Select by nth-of-child
+ - Tag name selector
+ - Id selector
+ - Class name selector
+ - nth-of-child selector
+ - Direct Child selector (a > b)
  - Smart table selector
 
 ### Smart table selector
