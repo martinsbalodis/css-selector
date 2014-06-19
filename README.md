@@ -1,4 +1,6 @@
 # CSS Selector
+[![Build Status](https://api.travis-ci.org/martinsbalodis/css-selector.svg)](https://travis-ci.org/martinsbalodis/css-selector)
+
 CSS selector can be used to retrieve CSS selector for a given element in DOM. The resulting selector will be optimized to be as short as possible.
 CSS selector can be retrieved also for multiple elements. In such case the resulting selector might be a much wider CSS selector which will point to similar elements.
 
