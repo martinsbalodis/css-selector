@@ -10,11 +10,11 @@
     <script type="text/javascript" src="../jasmine-standalone/lib/jasmine-1.3.1/jasmine-html.js"></script>
 
     <!-- include source files here... -->
-    <script type="text/javascript" src="../css-selector/cssselector.js"></script>
+    <script type="text/javascript" src="../lib/CssSelector.js"></script>
 
     <!-- include spec files here... -->
     <script type="text/javascript" src="../jquery/jquery-2.0.2.js"></script>
-    <script type="text/javascript" src="spec/CSSselectorSimple.js"></script>
+    <script type="text/javascript" src="CSSselectorSimple.spec.js"></script>
 
     <script type="text/javascript">
         (function () {
@@ -50,34 +50,8 @@
 <body>
 <div style="display:none">
     <div id="simple-tests">
-        <!-- test "should be able to select one element" -->
-        <div>
-            <a name="test-simple-element"></a>
-            <b></b>
-        </div>
-        <a></a>
 
-        <!-- test "" -->
-        <div>
-				<span>
-					<a name="test-milti-element"></a>
-				</span>
-				<span>
-					<a name="test-milti-element"></a>
-				</span>
-        </div>
 
-        <div>
-				<span>
-					<a></a>
-				</span>
-				<span>
-					<a class="test-multi-element-n"></a>
-				</span>
-				<span>
-					<a class="test-multi-element-n"></a>
-				</span>
-        </div>
 
 
         <!-- test "should be able to ignore tags" -->
