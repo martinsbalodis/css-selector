@@ -13,12 +13,14 @@
     "email": "martins256@gmail.com"
   },
   "scripts": {
-    "test": "node test/testrunner.js"
+    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run"
   },
   "devDependencies": {
     "karma-chrome-launcher": "^0.1.4",
+    "karma-firefox-launcher": "~0.1",    
     "karma-jasmine": "^0.1.5",
     "karma-requirejs": "^0.2.2",
-    "requirejs": "^2.1.14"
+    "requirejs": "^2.1.14",
+    "jquery": "~2.1.1"
   }
 }
