@@ -136,6 +136,77 @@ describe("CSS Selector Strip", function () {
 
 });
 
+describe("Combine css selectors", function() {
+
+    beforeEach(function () {
+
+        $el = jQuery("#tests").html("");
+        selector = new CssSelector({
+            parent: jQuery('#tests')[0],
+            allowMultipleSelectors: true
+        });
+    });
+
+    it("should find elements similar", function() {
+
+        $el.append('<span class="span1"></span><span class="span2"></span>');
+        var span1 = $('.span1', $el)[0];
+        var span2 = $('.span2', $el)[0];
+        var result = selector.checkSimilarElements(span1, span2);
+
+        expect(result).toBe(true);
+    });
+
+    it("should not find elements similar at different deepnesses", function() {
+
+        $el.append('<span class="span1"></span><div><span class="span2"></span></div>');
+        var span1 = $('.span1', $el)[0];
+        var span2 = $('.span2', $el)[0];
+        var result = selector.checkSimilarElements(span1, span2);
+
+        expect(result).toBe(false);
+    });
+
+    it("should group similar elements", function(){
+
+        $el.append('<span class="span1"></span><span class="span2"></span>');
+        var elements = $('span', $el).get();
+        var result = selector.getElementGroups(elements);
+
+        expect(result.length).toBe(1);
+        expect(result[0]).toEqual(elements);
+    });
+
+    it("should not group not similar elements", function(){
+
+        $el.append('<span class="span1"></span><div><span class="span2"></span></div>');
+        var elements = $('span', $el).get();
+        var result = selector.getElementGroups(elements);
+
+        expect(result.length).toBe(2);
+        expect(result[0]).toEqual([elements[0]]);
+        expect(result[1]).toEqual([elements[1]]);
+    });
+
+    it("should combine two selectors", function() {
+
+        $el.append('<div></div><span></span>');
+        var elements = $('div, span', $el);
+        var cssSelector = selector.getCssSelector(elements);
+
+        expect(cssSelector).toBe("div, span");
+    });
+
+    it("should combine two selectors at different deepnesses", function() {
+
+        $el.append('<div class="div1"></div><div><span></span></div>');
+        var elements = $('.div1, span', $el);
+        var cssSelector = selector.getCssSelector(elements);
+
+        expect(cssSelector).toBe("div.div1, span");
+    });
+});
+
 describe("Smart table selectors", function () {
 
 	beforeEach(function () {
