@@ -11,6 +11,7 @@ var selector = new CssSelector({
 		enableResultStripping: true,
 		ignoredTags: ['font'],
 		enableSmartTableSelector: true,
+		allowMultipleSelectors: false,
 		query: jQuery,
 		ignoredClasses: [
 			'my-class'
