@@ -18,7 +18,7 @@ var selector = new CssSelector({
 		]
 	});
 var elements = document.getElementsByClassName('my-class');
-var result_selector = selector.getCssSelector();
+var result_selector = selector.getCssSelector(elements);
 // #id div:nth-of-type(1) .another-class
 ```
 
