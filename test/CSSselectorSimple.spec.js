@@ -76,6 +76,15 @@ describe("CSS Selector Simple", function () {
 
 		expect(css_selector).toBe("table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(n+2)");
 	});
+
+	it("should be able to select body", function () {
+
+		var elements = jQuery('body');
+		selector.parent = jQuery('html')[0];
+		var css_selector = selector.getCssSelector(elements);
+
+		expect(css_selector).toBe("body:nth-of-type(1)");
+	});
 });
 
 describe("CSS Selector Strip", function () {
