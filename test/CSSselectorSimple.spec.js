@@ -83,7 +83,7 @@ describe("CSS Selector Simple", function () {
 		selector.parent = jQuery('html')[0];
 		var css_selector = selector.getCssSelector(elements);
 
-		expect(css_selector).toBe("body:nth-of-type(1)");
+		expect(css_selector).toBe("body");
 	});
 
 	it("should be able to select html", function () {
@@ -92,7 +92,7 @@ describe("CSS Selector Simple", function () {
 		selector.parent = document;
 		var css_selector = selector.getCssSelector(elements);
 
-		expect(css_selector).toBe("html:nth-of-type(1)");
+		expect(css_selector).toBe("html");
 	});
 });
 
