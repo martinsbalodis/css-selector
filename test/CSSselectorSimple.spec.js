@@ -57,6 +57,16 @@ describe("CSS Selector Simple", function () {
 		expect(css_selector).toBe("table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(1)");
 	});
 
+	it("should escape colon in tag name, id and class", function () {
+
+		$el.append('<div:test id="colon:testid" class="colon-test colon:class"></div:test>');
+		var elements = jQuery('.colon-test');
+		var cssSelector = selector.getCssSelector(elements);
+
+		expect(cssSelector).toBe("div\\:test#colon\\:testid.colon-test.colon\\:class:nth-of-type(1)");
+		expect($(cssSelector).length).toBe(1);
+	});
+
 	it("should be able to skip elements from top", function () {
 
         $el.append('<table><tr><td><span class="test-skip-top"></span></td></tr></table>');
